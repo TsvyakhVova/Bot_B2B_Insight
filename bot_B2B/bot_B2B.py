@@ -14,7 +14,7 @@ import datetime
 import requests
 
 
-WEBHOOK_HOST = ''
+WEBHOOK_HOST = 'https://github.com/TsvyakhVova/Bot_B2B_Insight/blob/main/bot_B2B/bot_B2B.py'
 WEBHOOK_PATH = ''
 WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
 
@@ -37,10 +37,10 @@ service = apiclient.discovery.build('sheets', 'v4', http = httpAuth)
 
 API_TOKEN = '6188981370:AAFOjbyJHLnlCx7lvkf-B9rG0WB5VxA2TB8'
 
-button_yes = KeyboardButton('Да')
-button_no = KeyboardButton('Нет')
-button_yes_photo = KeyboardButton('Да, фото есть')
-button_no_photo = KeyboardButton('Нет, фото нет')
+button_yes = KeyboardButton('Г„Г ')
+button_no = KeyboardButton('ГЌГҐГІ')
+button_yes_photo = KeyboardButton('Г„Г , ГґГ®ГІГ® ГҐГ±ГІГј')
+button_no_photo = KeyboardButton('ГЌГҐГІ, ГґГ®ГІГ® Г­ГҐГІ')
 button1 = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(button_yes).add(button_no)
 button2 = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(button_yes_photo).add(button_no_photo)
 
@@ -49,13 +49,13 @@ dp = Dispatcher(bot,storage=MemoryStorage())
  
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
-   await message.reply("Привет, самый продвинутый и заинтересованный в развитии B2B!")
-   await message.reply("Расскажи свои инсайты")
-   await message.reply("Готов начать работать ?", reply_markup=button1)
+   await message.reply("ГЏГ°ГЁГўГҐГІ, Г±Г Г¬Г»Г© ГЇГ°Г®Г¤ГўГЁГ­ГіГІГ»Г© ГЁ Г§Г ГЁГ­ГІГҐГ°ГҐГ±Г®ГўГ Г­Г­Г»Г© Гў Г°Г Г§ГўГЁГІГЁГЁ B2B!")
+   await message.reply("ГђГ Г±Г±ГЄГ Г¦ГЁ Г±ГўГ®ГЁ ГЁГ­Г±Г Г©ГІГ»")
+   await message.reply("ГѓГ®ГІГ®Гў Г­Г Г·Г ГІГј Г°Г ГЎГ®ГІГ ГІГј ?", reply_markup=button1)
    
-@dp.message_handler(filters.Text("Да"))
+@dp.message_handler(filters.Text("Г„Г "))
 async def with_puree(message: types.Message):
-    await message.reply("Введи свои имя и фамилию")
+    await message.reply("Г‚ГўГҐГ¤ГЁ Г±ГўГ®ГЁ ГЁГ¬Гї ГЁ ГґГ Г¬ГЁГ«ГЁГѕ")
     await UserState.name.set()
 
 with open("Index.txt") as file:
@@ -67,8 +67,8 @@ async def get_username(message: types.Message, state: FSMContext):
     await state.update_data(name=message.text)
     data = await state.get_data()
     Date = datetime.datetime.now()
-    await message.answer(f"Имя: {data['name']}\n")
-    await message.answer("Дата:"+ str(Date))
+    await message.answer(f"Г€Г¬Гї: {data['name']}\n")
+    await message.answer("Г„Г ГІГ :"+ str(Date))
     text = data['name']
     Date_Values = service.spreadsheets().values().append(
         spreadsheetId=spreadsheet_id,
@@ -85,7 +85,7 @@ async def get_username(message: types.Message, state: FSMContext):
             "values": [[""+str(text)+""]]}
         ).execute()
     await state.finish()
-    await message.reply("Кратко расскажи свою идею")
+    await message.reply("ГЉГ°Г ГІГЄГ® Г°Г Г±Г±ГЄГ Г¦ГЁ Г±ГўГ®Гѕ ГЁГ¤ГҐГѕ")
     await UserState.insite.set()
     
 @dp.message_handler(state=UserState.insite)
@@ -93,7 +93,7 @@ async def get_username(message: types.Message, state: FSMContext):
     global I_index
     await state.update_data(insite=message.text)
     data = await state.get_data()
-    await message.answer(f"Инсайт: {data['insite']}\n")
+    await message.answer(f"Г€Г­Г±Г Г©ГІ: {data['insite']}\n")
     text = data['insite']
     Insite_Values = service.spreadsheets().values().append(
         spreadsheetId=spreadsheet_id,
@@ -103,16 +103,16 @@ async def get_username(message: types.Message, state: FSMContext):
             "values": [[""+str(text)+""]]}
         ).execute()
     await state.finish()
-    await message.reply("Хорошая идея, я её записал. У тебя есть фото ?", reply_markup=button2)
+    await message.reply("Г•Г®Г°Г®ГёГ Гї ГЁГ¤ГҐГї, Гї ГҐВё Г§Г ГЇГЁГ±Г Г«. Г“ ГІГҐГЎГї ГҐГ±ГІГј ГґГ®ГІГ® ?", reply_markup=button2)
 
-@dp.message_handler(filters.Text("Да, фото есть"))
+@dp.message_handler(filters.Text("Г„Г , ГґГ®ГІГ® ГҐГ±ГІГј"))
 async def with_puree(message: types.Message):
-    await message.reply("Отправь мне фото из галлереи, я его сохраню у себя")
+    await message.reply("ГЋГІГЇГ°Г ГўГј Г¬Г­ГҐ ГґГ®ГІГ® ГЁГ§ ГЈГ Г«Г«ГҐГ°ГҐГЁ, Гї ГҐГЈГ® Г±Г®ГµГ°Г Г­Гѕ Гі Г±ГҐГЎГї")
 
-@dp.message_handler(filters.Text("Нет, фото нет"))
+@dp.message_handler(filters.Text("ГЌГҐГІ, ГґГ®ГІГ® Г­ГҐГІ"))
 async def with_puree(message: types.Message):
     global I_index
-    await message.reply("Хорошо, фото нет. Если появится новый инсайт пиши /start")
+    await message.reply("Г•Г®Г°Г®ГёГ®, ГґГ®ГІГ® Г­ГҐГІ. Г…Г±Г«ГЁ ГЇГ®ГїГўГЁГІГ±Гї Г­Г®ГўГ»Г© ГЁГ­Г±Г Г©ГІ ГЇГЁГёГЁ /start")
     I_index = int(I_index) + 1
     my_file = open("Index.txt", "w")
     my_file.write(str(I_index))
@@ -140,11 +140,11 @@ async def URL_Photo(message: types.Message):
     my_file = open("Index.txt", "w")
     my_file.write(str(I_index))
     my_file.close()
-    await message.reply("Хорошо, фото я сохранил. Если появится новый инсайт пиши /start")
+    await message.reply("Г•Г®Г°Г®ГёГ®, ГґГ®ГІГ® Гї Г±Г®ГµГ°Г Г­ГЁГ«. Г…Г±Г«ГЁ ГЇГ®ГїГўГЁГІГ±Гї Г­Г®ГўГ»Г© ГЁГ­Г±Г Г©ГІ ГЇГЁГёГЁ /start")
 
-@dp.message_handler(filters.Text("Нет"))
+@dp.message_handler(filters.Text("ГЌГҐГІ"))
 async def with_puree(message: types.Message):
-    await message.reply("Хорошо, я тебя понял. Если появится новый инсайт пиши /start")
+    await message.reply("Г•Г®Г°Г®ГёГ®, Гї ГІГҐГЎГї ГЇГ®Г­ГїГ«. Г…Г±Г«ГЁ ГЇГ®ГїГўГЁГІГ±Гї Г­Г®ГўГ»Г© ГЁГ­Г±Г Г©ГІ ГЇГЁГёГЁ /start")
 
 
 async def on_startup(dp):
